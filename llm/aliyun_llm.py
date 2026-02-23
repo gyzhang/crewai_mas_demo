@@ -221,9 +221,9 @@ class AliyunLLM(BaseLLM):
                         pass
 
         logger.info(
-            "发送 LLM API 请求 endpoint=%s model=%s messages=%s",
+            "发送 LLM API 请求 endpoint=%s model=%s payload=%s",
             self.endpoint,
-            payload.get("model"),
+            payload,
             messages,
         )
         last_exception: BaseException | None = None
@@ -338,7 +338,9 @@ class AliyunLLM(BaseLLM):
                     available_functions,
                     max_iterations - 1,
                 )
-            raise ValueError("响应包含 tool_calls 但未提供 available_functions，无法执行工具调用")
+            # CrewAI 会故意传 available_functions=None，让 LLM 只返回原始 tool_calls，
+            # 由 executor 的 _handle_native_tool_calls 执行。此处直接返回 tool_calls 列表。
+            return message["tool_calls"]
 
         content = message.get("content")
         if content is None:

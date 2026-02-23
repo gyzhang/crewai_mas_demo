@@ -1,6 +1,6 @@
 # CrewAI 多智能体系统核心依赖
-crewai==1.7.2
-crewai-tools==1.7.2
+crewai==1.9.3
+crewai-tools==1.9.3
 
 # HTTP 请求库（用于 API 调用）
 requests==2.32.5
